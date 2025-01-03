@@ -1,0 +1,5 @@
+.idea
+lastrun
+node_modules
+dist/
+.env*

@@ -1,0 +1,141 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+type AlarmDstipGeo {
+  accuracy       Int
+  address        String
+  asn            Int
+  city           String
+  continent_code String
+  country_code   String
+  country_name   String
+  isp            String
+  latitude       Int
+  longitude      Int
+  organization   String
+  timezone       String
+}
+
+type AlarmInnerAlertSource {
+  ip   String
+  port Int
+}
+
+type AlarmInnerAlertTarget {
+  ip   String
+  port Int
+}
+
+type AlarmSrcipGeo {
+  accuracy       Int
+  address        String
+  asn            Int
+  city           String
+  continent_code String
+  country_code   String
+  country_name   String
+  isp            String
+  latitude       Float
+  longitude      Float
+  organization   String
+  timezone       String
+}
+
+type AlarmUsgipGeo {
+  accuracy       Int
+  address        String
+  asn            Int
+  city           String
+  continent_code String
+  country_code   String
+  country_name   String
+  isp            String
+  latitude       Float
+  longitude      Float
+  organization   String
+  timezone       String
+}
+
+model alarm {
+  id                       String                 @id @default(auto()) @map("_id") @db.ObjectId
+  app_proto                String?
+  archived                 Boolean
+  catname                  String
+  datetime                 DateTime               @db.Date
+  dest_ip                  String
+  dest_port                Int
+  dst_mac                  String?
+  dstipGeo                 AlarmDstipGeo
+  event_type               String
+  flow_id                  BigInt
+  host                     String
+  in_iface                 String?
+  inner_alert_action       String
+  inner_alert_category     String
+  inner_alert_gid          Int
+  inner_alert_rev          Int
+  inner_alert_severity     Int
+  inner_alert_signature    String
+  inner_alert_signature_id Int
+  inner_alert_source       AlarmInnerAlertSource?
+  inner_alert_target       AlarmInnerAlertTarget?
+  is_negative              Boolean
+  key                      String
+  msg                      String
+  proto                    String
+  site_id                  String
+  src_ip                   String
+  src_mac                  String?
+  src_port                 Int
+  srcipASN                 String
+  srcipCountry             String
+  srcipGeo                 AlarmSrcipGeo
+  subsystem                String
+  time                     BigInt
+  timestamp                Int
+  tx_id                    Int?
+  unique_alertid           String
+  usgip                    String
+  usgipASN                 String
+  usgipCountry             String
+  usgipGeo                 AlarmUsgipGeo
+  vlan                     Int?
+
+  @@index([datetime], map: "datetime_1")
+  @@index([site_id, archived], map: "site_id_1_archived_1")
+  @@index([key], map: "key_1")
+}
+
+model threat_log_view {
+  id                       String  @id @default(auto()) @map("_id") @db.ObjectId
+  action                   String
+  alarm_id                 String
+  client_mac               String
+  counterpart              String
+  counterpart_country_code String
+  counterpart_location     String
+  counterpart_mac          String
+  device                   String
+  device_mac               String
+  /// Field referred in an index, but found no data to define the type.
+  domain                   Json?
+  enhanced_detection       Boolean
+  severity                 String
+  signature                String
+  signature_type           String
+  site_id                  String
+  /// Field referred in an index, but found no data to define the type.
+  src_mac                  Json?
+  threat_direction         String
+  threat_type              String
+  time                     BigInt
+
+  @@index([time(sort: Desc), site_id, src_mac, threat_type, threat_direction], map: "time-1_site_id_1_client_mac_1_threat_type_1_threat_direction_1")
+  @@fulltext([counterpart, domain, signature], map: "search_text_1")
+}
