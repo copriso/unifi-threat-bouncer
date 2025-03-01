@@ -40,7 +40,7 @@ function convert2Alert(alarms: alarm[]): AddAlertsRequest {
                 latitude: alarm.srcipGeo.latitude,
                 longitude: alarm.srcipGeo.longitude,
                 as_name: alarm.srcipASN?.trim(),
-                cn: alarm.srcipCountry
+                cn: alarm.srcipCountry || ''
             },
             decisions: [{
                 origin: 'cscli',

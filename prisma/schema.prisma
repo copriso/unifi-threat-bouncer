@@ -94,7 +94,7 @@ model alarm {
   src_mac                  String?
   src_port                 Int
   srcipASN                 String?
-  srcipCountry             String
+  srcipCountry             String?
   srcipGeo                 AlarmSrcipGeo
   subsystem                String
   time                     BigInt
