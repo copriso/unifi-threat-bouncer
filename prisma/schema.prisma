@@ -93,7 +93,7 @@ model alarm {
   src_ip                   String
   src_mac                  String?
   src_port                 Int
-  srcipASN                 String
+  srcipASN                 String?
   srcipCountry             String
   srcipGeo                 AlarmSrcipGeo
   subsystem                String

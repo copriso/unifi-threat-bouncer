@@ -39,7 +39,7 @@ function convert2Alert(alarms: alarm[]): AddAlertsRequest {
                 scope: 'ip',
                 latitude: alarm.srcipGeo.latitude,
                 longitude: alarm.srcipGeo.longitude,
-                as_name: alarm.srcipASN.trim(),
+                as_name: alarm.srcipASN?.trim(),
                 cn: alarm.srcipCountry
             },
             decisions: [{
